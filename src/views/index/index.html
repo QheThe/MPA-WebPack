@@ -1,12 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <title>金榜题茗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="js/jquery-1.10.2.min.js"></script>
 </head>
+
 <body>
-    <h1>index</h1>
+  <div class="swiper-container">
+    <div class="swiper-wrapper all" id="store">
+
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+  <div id='introduce'>
+    <div class="about_all">
+     
+    </div>
+  </div>
+  <div class="product_i common_i_css">
+    <div class="common_i_title">
+      <h2>人气推荐</h2>
+      <span>用心服务 好评如潮</span>
+    </div>
+    <div class="c"></div>
+    <div class="all_list">
+        <div class="product_i_list">
+          <ul class="swiper-wrapper images_all">
+          </ul>
+          <div class="swiper-pagination"></div>
+          <div class="c"></div>
+        </div>
+      </div>
+
+  </div>
+
+  <div class="orderbtn" style="margin:25px auto" onclick="ordernow()"><a>立即订餐</a></div>
+  <div class="h50"></div>
+  <nav class="mui-bar mui-bar-tab">
+    <div class="t-line"> <a href="index.html" class="aui-tab-item mui-active "> <span
+          class="mui-icon mui-icon-home"></span> <span class="mui-tab-label">首页</span> </a> <a href="shoplist.html"
+        class="aui-tab-item"> <span class="mui-icon mui-icon-extra mui-icon-extra-class"></span> <span
+          class="mui-tab-label">全部门店</span> </a> <a class="aui-tab-item" href="#"> <span
+          class="mui-icon mui-icon-extra mui-icon-extra-cart"></span> <span class="mui-tab-label">订餐客服</span> </a> <a
+        class="aui-tab-item" href="mycenter.html"> <span class="mui-icon mui-icon-extra mui-icon-extra-people"></span>
+        <span class="mui-tab-label">个人中心</span> </a> </div>
+  </nav>
+  <div id="choosebox">
+    <div class="choosebox">
+      <div class="greenbox">
+        <h2>欢迎光临</h2>
+        <h1>请选择订餐方式</h1>
+        <a class="cd" href="cdorder.html">餐单订餐</a>
+        <a class="cb" href="cborder.html">餐标订餐</a>
+      </div>
+    </div>
+    <i onclick="gbcf()">×</i>
+  </div>
+  <script src="js/swiper.min.js"></script>
+  <script type="text/javascript">
+    // ```````````````````````````````````````````渲染页面接口```````````````````````````````````````````
+    
+    
+
+// $.ajax({
+//   type: "GET",
+//   url: "/gold_medal/public/index.php/api_middle_end/we_chat/weChatAuthorizeEnd",
+//   data: {
+//     code:'foobar'
+//   },
+//   success: function (res) {
+//   alert("TCL: res", res)
+    
+//   }
+// });
+
+  // ```````````````````````````````````````````渲染页面接口```````````````````````````````````````````
+    window.onload = function () {
+      function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+      } //获取get传来的id
+      var id = GetQueryString('id')
+      console.log(id);
+      
+      $('.cd').attr('href', 'cdorder.html?id=' + id) //
+      $('.cb').attr('href', 'cborder.html?id=' + id) //
+
+      $.ajax({
+        type: "GET",
+        url:"/gold_medal/public/index.php/api_frontend/store/getInIndex/",
+        success: function (res) {
+          if (res.code == 0) {
+            resul = res.data
+            console.log(resul)
+
+            html_ = '';
+            html2_ = '';
+            var html_3 = ''
+
+            for (i = 0; i <=0; i++) {
+              html = `<div class="swiper-slide" style="background-image:url(` + resul.store.images[0] + `)" data-id="`+resul.store.id+`">
+                  <div class="blackbg"></div>
+                  <div class="title">
+                  <h1>` + resul.store.name + `</h1>
+                    <a href="tel:` + resul.store.consumerHotLine + `"><img src="images/telicon.png"></a><a href="map.html"><img
+                    src="images/addicon.png"></a><a href="shop.html"><img src="images/photoicon.png"></a><span>距您2.6km</span>
+                    </div>
+                </div>`;
+              html2 = `<div class="aboutbox">
+                        <p>`+resul.store.brief+`</p>
+                        <a href="shopcontent.html?id=`+resul.store.id+`">了解更多></a>
+                      </div>`;
+              html_ += html;
+              html2_ += html2;
+              
+            }
+            $('#store').html(html_)
+            $('#introduce').html(html2_)
+
+            for (i=0;i< resul.dish.length;i++){
+              html_3 +=
+              `
+              
+                  <li class="swiper-slide"> 
+                    <a href="menu.html?id=` + resul.dish[i].id + `">
+                      <div class="cpimg"><img src="` + resul.dish[i].images[0] + `">
+                        <div class="cpimgbg">
+                          <span style="color:#fff;float:left;padding:0 0 0 5px;">已点过</span>
+                          <span>￥` + resul.dish[i].price + `</span>
+                        </div>
+                      </div>
+                      <h3>` + resul.dish[i].name + `</h3>
+                    </a> 
+                  </li>
+
+              
+              `
+            }
+            $('.images_all').html(html_3)
+            
+            var swiper = new Swiper('.swiper-container ', {
+              effect: 'coverflow',
+              grabCursor: true,
+              centeredSlides: true,
+              slidesPerView: 'auto',
+              initialSlide: 1,
+              coverflowEffect: {
+                rotate: 60,
+                stretch: 80,
+                depth: 280,
+                modifier: 1,
+                slideShadows: true,
+              },
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+              on: {
+                slideChangeTransitionEnd: function () {
+                  //alert(this.activeIndex); //切换结束时，告诉我现在是第几个slide
+                  $(".aboutbox").hide();
+                  $(".aboutbox").eq(this.activeIndex).show();
+                  $(".product_i_list").hide();
+                  $(".product_i_list").eq(this.activeIndex).show();
+                  update();
+                },
+              }
+            });
+            function update() {
+            var swiper1 = new Swiper('.images_all', {
+              slidesPerView: 3,
+              spaceBetween: '3.5%',
+              pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+              },
+              });
+              }
+            
+            
+          }
+        }
+      });
+    }
+
+
+    function ordernow() {
+      $('#choosebox').fadeIn("fast");;
+    }
+
+    function gbcf() {
+      $('#choosebox').fadeOut("fast");
+    }
+  
+  
+    // ```````````````````````````````````````````首页接口```````````````````````````````````````````
+    
+
+
+
+  </script>
 </body>
+
 </html>
