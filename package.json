@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "flexible.js": "^2.0.19",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "less": "^3.10.3",
     "normalize.css": "^8.0.1"
   }
